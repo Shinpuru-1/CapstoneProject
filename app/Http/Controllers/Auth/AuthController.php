@@ -41,11 +41,11 @@ class AuthController extends Controller
             
             // Redirect based on email domain
             if ($emailDomain === 'admin.com') {
-                return redirect()->route('admin.dashboard')->with('success', 'Login successful!');
+                return redirect()->route('admin.dashboard')->with('success', Auth::user()->name . ' Login successful!');
             } elseif ($emailDomain === 'staff.com') {
-                return redirect()->route('staff.dashboard')->with('success', 'Login successful!');
+                return redirect()->route('staff.dashboard')->with('success', Auth::user()->name . ' Login successful!');
             } else {
-                return redirect()->route('customer.dashboard')->with('success', 'Login successful!');
+                return redirect()->route('customer.dashboard')->with('success', Auth::user()->name . ' Login successful!');
             }
         }
 
@@ -128,7 +128,7 @@ class AuthController extends Controller
         
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
+
         return redirect()->route('login')
             ->with('success', 'You have been logged out successfully');
     }

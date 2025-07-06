@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
             --primary-gradient: linear-gradient(
@@ -221,7 +222,7 @@
                     <li><a class="dropdown-item" href="#">Update Personal Info</a></li>
                 </ul>
             </div>
-            <a href="#">Logout</a>
+            <a href="{{ route('logout') }}">Logout</a>
         </nav>
         <div class="flex-grow-1">
             <nav class="navbar navbar-expand navbar-light bg-light">
@@ -231,40 +232,9 @@
             </nav>
 
             <!-- Dashboard Summary Cards -->
-            <div class="container my-4">
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="card card-primary text-white">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Users</h5>
-                                <p class="card-text fs-3">
-                                    {{ $totalUsers ?? 0 }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card card-orange text-white">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Earnings</h5>
-                                <p class="card-text fs-3">
-                                    ₱{{ number_format($totalEarnings ?? 0, 2) }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+         
             <!-- Graph Section -->
-            <div class="container mb-5">
-                <div class="card card-secondary">
-                    <div class="card-body">
-                        <h5 class="card-title text-white">Monthly Sales Overview</h5>
-                        <canvas id="salesChart" height="80"></canvas>
-                    </div>
-                </div>
-            </div>
+           
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -306,6 +276,40 @@
                 }
             });
         </script>
+    <script>
+        // Toast notification function
+        const showToast = (icon, message) => {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: icon,
+                title: message
+            });
+        };
+
+        // Show alerts for session messages
+        @if(session('success'))
+            showToast('success', '{{ session('success') }}');
+        @endif
+
+        @if(session('error'))
+            showToast('error', '{{ session('error') }}');
+        @endif
+
+        @if($errors->any())
+            showToast('error', '{{ $errors->first() }}');
+        @endif
+    </script>
     </div>
 </body>
 </html>
