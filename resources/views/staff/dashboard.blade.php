@@ -156,7 +156,7 @@
 <body>
     <div class="d-flex">
         <nav class="sidebar flex-shrink-0">
-            <h4 class="p-3">Staff</h4>
+            <h4 class="p-3">Staff Panel</h4>
             <a href="#">Dashboard</a>
             <div class="dropdown">
                 <a class="dropdown-toggle" data-bs-toggle="dropdown">Inventory</a>
