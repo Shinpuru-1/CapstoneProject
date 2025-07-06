@@ -227,7 +227,7 @@
         <div class="flex-grow-1">
             <nav class="navbar navbar-expand navbar-light bg-light">
                 <div class="container-fluid">
-                    <span class="navbar-brand mb-0 h1">Welcome, kupal</span>
+                    <span class="navbar-brand mb-0 h1">Welcome, staff</span>
                 </div>
             </nav>
 
