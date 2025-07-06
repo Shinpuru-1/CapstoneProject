@@ -226,15 +226,205 @@
         </nav>
         <div class="flex-grow-1">
             <nav class="navbar navbar-expand navbar-light bg-light">
-                <div class="container-fluid">
+                <div class="container-fluid d-flex justify-content-between align-items-center">
                     <span class="navbar-brand mb-0 h1">Welcome, staff</span>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ asset('images/profile.png') }}" alt="Profile" width="40" height="40" class="rounded-circle me-2" style="object-fit: cover;">
+                            <span>My Profile</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                            <li>
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#viewProfileModal">View Profile</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editProfileModal" id="editProfileBtn">Edit Profile</a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
+                        </ul>
+                        <!-- Edit Profile Modal -->
+                        <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <form method="POST" action="{{ url('staff.profile.update') }}" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <!-- Profile Picture Upload -->
+                                  <div class="mb-3 text-center">
+                                    <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images/profile.png') }}" 
+                                         alt="Profile Picture" 
+                                         class="rounded-circle mb-2" 
+                                         width="80" height="80" 
+                                         style="object-fit: cover;">
+                                    <div>
+                                      <input class="form-control mt-2" type="file" name="profile_picture" accept="image/*">
+                                    </div>
+                                  </div>
+                                  <!-- Name -->
+                                  <div class="mb-3">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" value="{{ Auth::user()->name ?? '' }}">
+                                  </div>
+                                  <!-- Email -->
+                                  <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="{{ Auth::user()->email ?? '' }}">
+                                  </div>
+                                  <!-- Add more fields as needed -->
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- View Profile Modal -->
+                        <div class="modal fade" id="viewProfileModal" tabindex="-1" aria-labelledby="viewProfileModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="viewProfileModalLabel">My Profile</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body text-center">
+                                <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images/profile.png') }}"
+                                     alt="Profile Picture"
+                                     class="rounded-circle mb-3"
+                                     width="100" height="100"
+                                     style="object-fit: cover;">
+                                <h5>{{ Auth::user()->name }}</h5>
+                                <p class="mb-1">{{ Auth::user()->email }}</p>
+                                <!-- Add more fields if needed -->
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
                 </div>
             </nav>
 
             <!-- Dashboard Summary Cards -->
-         
+            <div class="container mt-4">
+                <div class="row g-3 mb-4 justify-content-center">
+                    <div class="col-6 col-md-2 d-flex">
+                        <div class="card card-primary text-white text-center shadow flex-fill h-100">
+                            <div class="card-body">
+                                <div class="card-title fs-6">Total Users</div>
+                                <div class="card-text fs-3">{{ $totalUsers ?? 0 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 d-flex">
+                        <div class="card card-orange text-white text-center shadow flex-fill h-100">
+                            <div class="card-body">
+                                <div class="card-title fs-6">Total Products</div>
+                                <div class="card-text fs-3">{{ $totalProducts ?? 0 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 d-flex">
+                        <div class="card card-secondary text-white text-center shadow flex-fill h-100">
+                            <div class="card-body">
+                                <div class="card-title fs-6">Pending Requests</div>
+                                <div class="card-text fs-3">{{ $pendingRequests ?? 0 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 d-flex">
+                        <div class="card card-primary text-white text-center shadow flex-fill h-100">
+                            <div class="card-body">
+                                <div class="card-title fs-6">Total for Delivery</div>
+                                <div class="card-text fs-3">{{ $totalForDelivery ?? 0 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-2 d-flex">
+                        <div class="card card-orange text-white text-center shadow flex-fill h-100">
+                            <div class="card-body">
+                                <div class="card-title fs-6">Total for Pickup</div>
+                                <div class="card-text fs-3">{{ $totalForPickup ?? 0 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Dashboard Summary Cards -->
+
             <!-- Graph Section -->
-           
+
+            <!-- Inventory Table Section -->
+            <div class="container mt-4">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Inventory</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Item Name</th>
+                                        <th>Category</th>
+                                        <th>Stock</th>
+                                        <th>Unit</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{-- Sample static data, replace with @foreach($inventory as $item) --}}
+                                    <tr>
+                                        <td>1</td>
+                                        <td>PLA Filament</td>
+                                        <td>Raw Material</td>
+                                        <td>25</td>
+                                        <td>kg</td>
+                                        <td><span class="badge bg-success">In Stock</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>ABS Filament</td>
+                                        <td>Raw Material</td>
+                                        <td>5</td>
+                                        <td>kg</td>
+                                        <td><span class="badge bg-warning text-dark">Low Stock</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>3D Printed Gear</td>
+                                        <td>Finished Product</td>
+                                        <td>12</td>
+                                        <td>pcs</td>
+                                        <td><span class="badge bg-success">In Stock</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>3D Printed Case</td>
+                                        <td>Finished Product</td>
+                                        <td>0</td>
+                                        <td>pcs</td>
+                                        <td><span class="badge bg-danger">Out of Stock</span></td>
+                                    </tr>
+                                    {{-- End sample data --}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Inventory Table Section -->
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
