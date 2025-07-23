@@ -27,6 +27,12 @@ Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name
     Route::middleware(['auth'])->group(function () {
         Route::get('/admin/dashboard', [AdminDashboardController::class, 'adminDashboard'])->name('admin.dashboard');
     });
+     Route::middleware(['auth'])->group(function () {
+        Route::get('/admin/customers', [AdminDashboardController::class, 'customers'])->name('admin.customers');
+    });
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/admin/staff', [AdminDashboardController::class, 'staff'])->name('admin.staff');
+    });
 
     // Staff routes
     Route::middleware(['auth'])->group(function () {

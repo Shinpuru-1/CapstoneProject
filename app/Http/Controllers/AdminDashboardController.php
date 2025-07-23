@@ -10,4 +10,14 @@ class AdminDashboardController extends Controller
     {
         return view('admin.dashboard');
     }
+
+        public function customers()
+    {
+        return view('admin.customers');
+    }
+
+       public function staff()
+    {
+        return view('admin.staff');
+    }
 }

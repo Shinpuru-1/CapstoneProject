@@ -63,62 +63,56 @@
       </a>
     </div>
   </aside>
+<!-- Main Content -->
+<!-- Main Content -->
+<main class="flex-1 p-8 overflow-y-auto">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-3xl font-bold text-gray-800">Manage Customers</h1>
+    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow">
+      + Add Customer
+    </button>
+  </div>
 
-  <!-- Main Content -->
-  <main class="flex-1 p-8 overflow-y-auto">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Dashboard Overview</h1>
+  <!-- Customers Table -->
+  <div class="bg-white rounded-xl shadow overflow-x-auto">
+    <table class="min-w-full text-sm text-left">
+      <thead class="bg-gray-100 text-gray-700">
+        <tr>
+          <th class="px-6 py-3">Customer ID</th>
+          <th class="px-6 py-3">Name</th>
+          <th class="px-6 py-3">Email</th>
+          <th class="px-6 py-3">Phone</th>
+          <th class="px-6 py-3">Status</th>
+          <th class="px-6 py-3 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-800">
+        <!-- Sample Customer Row -->
+        <tr class="border-t">
+          <td class="px-6 py-4"></td>
+          <td class="px-6 py-4"></td>
+          <td class="px-6 py-4"></td>
+          <td class="px-6 py-4"></td>
+          <td class="px-6 py-4">
+            <span class="text-green-600 font-medium"></span>
+          </td>
+          <td class="px-6 py-4 text-center space-x-2">
+            <a href="#customerView" class="text-indigo-600 hover:underline">View</a>
+            <a href="#" class="text-blue-600 hover:underline">Edit</a>
+            <a href="#" class="text-red-600 hover:underline">Delete</a>
+          </td>
+        </tr>
+        <!-- Add more static rows as needed -->
+      </tbody>
+    </table>
+  </div>
 
-    <!-- Example content boxes -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div class="bg-white rounded-xl shadow p-6">
-        <h2 class="text-xl font-semibold text-gray-700">Total Customers</h2>
-        <p class="mt-2 text-3xl font-bold text-blue-600">1,245</p>
-      </div>
+  <!-- Customer Detail View (Static) -->
 
-      <div class="bg-white rounded-xl shadow p-6">
-        <h2 class="text-xl font-semibold text-gray-700">Pending Orders</h2>
-        <p class="mt-2 text-3xl font-bold text-yellow-500">58</p>
-      </div>
+</main>
 
-      <div class="bg-white rounded-xl shadow p-6">
-        <h2 class="text-xl font-semibold text-gray-700">Inventory Stock</h2>
-        <p class="mt-2 text-3xl font-bold text-green-500">3,210</p>
-      </div>
-    </div>
 
-    <div class="mt-10">
-      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Recent Orders</h2>
-      <div class="bg-white rounded-xl shadow overflow-x-auto">
-        <table class="min-w-full table-auto text-left text-sm">
-          <thead class="bg-gray-100 text-gray-600">
-            <tr>
-              <th class="px-6 py-3">Order ID</th>
-              <th class="px-6 py-3">Customer</th>
-              <th class="px-6 py-3">Status</th>
-              <th class="px-6 py-3">Date</th>
-              <th class="px-6 py-3">Total</th>
-            </tr>
-          </thead>
-          <tbody class="text-gray-700">
-            <tr class="border-t">
-              <td class="px-6 py-4">#ORD1234</td>
-              <td class="px-6 py-4">Lloyd Casquio</td>
-              <td class="px-6 py-4 text-yellow-600">Pending</td>
-              <td class="px-6 py-4">2025-07-16</td>
-              <td class="px-6 py-4">₱129.99</td>
-            </tr>
-            <tr class="border-t">
-              <td class="px-6 py-4">#ORD1235</td>
-              <td class="px-6 py-4">Jeremy Suyat</td>
-              <td class="px-6 py-4 text-green-600">Completed</td>
-              <td class="px-6 py-4">2025-07-15</td>
-              <td class="px-6 py-4">₱89.00</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </main>
+
 
   <script>
     feather.replace(); // load icons
