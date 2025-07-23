@@ -1,71 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            sidebar: '#9A7700',
-          }
-        }
-      }
-    }
-  </script>
-  <script src="https://unpkg.com/feather-icons"></script>
-</head>
-<body class="flex h-screen bg-gray-100">
-
-  <!-- Sidebar -->
-  <aside class="w-64 bg-sidebar text-white flex flex-col">
-    <div class="p-6 text-2xl font-semibold border-b border-gray-700">
-      Admin Panel
-    </div>
-    <nav class="flex-1 p-4 space-y-2">
-      <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="home" class="w-5 h-5"></i><span>Dashboard</span>
-      </a>
-      <a href="{{ route('admin.customers') }}" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="users" class="w-5 h-5"></i><span>Manage Customers</span>
-      </a>
-      <a href="{{ route('admin.staff') }}" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="user-check" class="w-5 h-5"></i><span>Manage Staff</span>
-      </a>
-      <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="package" class="w-5 h-5"></i><span>Manage Products</span>
-      </a>
-      <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="layers" class="w-5 h-5"></i><span>Manage Inventory</span>
-      </a>
-      <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="shopping-cart" class="w-5 h-5"></i><span>Manage Orders</span>
-      </a>
-      <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="bar-chart-2" class="w-5 h-5"></i><span>Report</span>
-      </a>
-      <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="map-pin" class="w-5 h-5"></i><span>Order Tracking</span>
-      </a>
-      <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="user" class="w-5 h-5"></i><span>Profile</span>
-      </a>
-      <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="settings" class="w-5 h-5"></i><span>System Setting</span>
-      </a>
-    </nav>
-    <div class="p-4 border-t border-gray-700">
-      <a href="{{ route('login') }}" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-red-600 text-red-400 hover:text-white">
-        <i data-feather="log-out" class="w-5 h-5"></i><span>Logout</span>
-      </a>
-    </div>
-  </aside>
-
-  <!-- Main Content -->
+<!-- Main Content -->
 <main class="flex-1 p-6 overflow-y-auto">
+  <!-- Staff Dashboard Summary -->
+  <div class="mb-8">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Staff Dashboard</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Total Staff -->
+      <div class="bg-blue-100 rounded-xl shadow p-6 flex flex-col items-center">
+        <i data-feather="users" class="w-8 h-8 text-blue-600 mb-2"></i>
+        <div class="text-3xl font-bold text-blue-700">15</div>
+        <div class="text-gray-700 mt-1 text-center">Total Staff</div>
+      </div>
+      <!-- Active Staff -->
+      <div class="bg-green-100 rounded-xl shadow p-6 flex flex-col items-center">
+        <i data-feather="user-check" class="w-8 h-8 text-green-600 mb-2"></i>
+        <div class="text-3xl font-bold text-green-700">13</div>
+        <div class="text-gray-700 mt-1 text-center">Active Staff</div>
+      </div>
+      <!-- Inactive Staff -->
+      <div class="bg-yellow-100 rounded-xl shadow p-6 flex flex-col items-center">
+        <i data-feather="user-x" class="w-8 h-8 text-yellow-600 mb-2"></i>
+        <div class="text-3xl font-bold text-yellow-700">2</div>
+        <div class="text-gray-700 mt-1 text-center">Inactive Staff</div>
+      </div>
+    
+    </div>
+  </div>
+
   <div class="mb-6">
     <h1 class="text-3xl font-semibold text-gray-800">Manage Staff</h1>
     <button class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
@@ -88,16 +48,23 @@
       </thead>
       <tbody class="text-gray-700">
         <tr class="border-b hover:bg-gray-100">
-          <td class="px-6 py-4"></td>
-          <td class="px-6 py-4"></td>
-          <td class="px-6 py-4"></td>
-          <td class="px-6 py-4"></td>
+          <td class="px-6 py-4">1</td>
+          <td class="px-6 py-4">Juan Dela Cruz</td>
+          <td class="px-6 py-4">juan@email.com</td>
+          <td class="px-6 py-4">Admin</td>
           <td class="px-6 py-4">
-            <span class="px-2 py-1 text-xs font-semibold bg-green-100 text-green-800 rounded-full"></span>
+            <span class="px-2 py-1 text-xs font-semibold bg-green-100 text-green-800 rounded-full">Active</span>
           </td>
           <td class="px-6 py-4 space-x-2">
-            <button class="text-blue-500 hover:underline">Edit</button>
-            <button class="text-red-500 hover:underline">Delete</button>
+            <button class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-xs">
+              <i data-feather="edit" class="w-4 h-4 mr-1"></i>Edit
+            </button>
+            <button class="inline-flex items-center px-2 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-xs">
+              <i data-feather="trash-2" class="w-4 h-4 mr-1"></i>Delete
+            </button>
+            <button class="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 text-xs">
+              <i data-feather="eye" class="w-4 h-4 mr-1"></i>View
+            </button>
           </td>
         </tr>
         <!-- More rows as needed -->
@@ -106,10 +73,7 @@
   </div>
 </main>
 
-
-
-
-  <script>
+<script>
     feather.replace(); // load icons
   </script>
 

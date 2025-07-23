@@ -1,68 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            sidebar: '#9A7700',
-          }
-        }
-      }
-    }
-  </script>
-  <script src="https://unpkg.com/feather-icons"></script>
-</head>
-<body class="flex h-screen bg-gray-100">
 
-  <!-- Sidebar -->
-  <aside class="w-64 bg-sidebar text-white flex flex-col">
-    <div class="p-6 text-2xl font-semibold border-b border-gray-700">
-      Admin Panel
-    </div>
-    <nav class="flex-1 p-4 space-y-2">
-      <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="home" class="w-5 h-5"></i><span>Dashboard</span>
-      </a>
-      <a href="{{ route('admin.customers') }}" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="users" class="w-5 h-5"></i><span>Manage Customers</span>
-      </a>
-      <a href="{{ route('admin.staff') }}" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="user-check" class="w-5 h-5"></i><span>Manage Staff</span>
-      </a>
-      <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="package" class="w-5 h-5"></i><span>Manage Products</span>
-      </a>
-      <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="layers" class="w-5 h-5"></i><span>Manage Inventory</span>
-      </a>
-      <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="shopping-cart" class="w-5 h-5"></i><span>Manage Orders</span>
-      </a>
-      <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="bar-chart-2" class="w-5 h-5"></i><span>Report</span>
-      </a>
-      <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="map-pin" class="w-5 h-5"></i><span>Order Tracking</span>
-      </a>
-      <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="user" class="w-5 h-5"></i><span>Profile</span>
-      </a>
-      <a href="#" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-gray-700">
-        <i data-feather="settings" class="w-5 h-5"></i><span>System Setting</span>
-      </a>
-    </nav>
-    <div class="p-4 border-t border-gray-700">
-      <a href="{{ route('login') }}" class="flex items-center space-x-3 px-4 py-2 rounded hover:bg-red-600 text-red-400 hover:text-white">
-        <i data-feather="log-out" class="w-5 h-5"></i><span>Logout</span>
-      </a>
-    </div>
-  </aside>
 
   <!-- Main Content -->
   <main class="flex-1 p-8 overflow-y-auto">
@@ -116,6 +52,34 @@
             </tr>
           </tbody>
         </table>
+      </div> <!-- End of Recent Orders -->
+
+      <!-- Sales Graph -->
+      <div class="mt-10">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-2xl font-semibold text-gray-800">Sales</h2>
+          <div class="flex items-center space-x-2">
+            <select id="salesView" class="border rounded px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly" selected>Monthly</option>
+              <option value="yearly">Yearly</option>
+            </select>
+            <input 
+              type="date" 
+              id="salesDate" 
+              class="border rounded px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+        <div class="bg-white rounded-xl shadow p-6 flex flex-col md:flex-row items-center justify-between">
+          <div class="w-full md:w-1/2 flex justify-center">
+            <canvas id="salesChart" height="200"></canvas>
+          </div>
+          <div class="w-full md:w-1/2 mt-8 md:mt-0 flex justify-center">
+            <canvas id="smallChart" height="50" width="50"></canvas>
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -123,6 +87,82 @@
   <script>
     feather.replace(); // load icons
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Sales Bar Graph
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        datasets: [{
+          label: 'Sales (₱)',
+          data: [1200, 1900, 3000, 2500, 2200, 2700, 3200],
+          backgroundColor: 'rgba(59, 130, 246, 0.7)',
+          borderColor: [
+            'rgba(59, 130, 246, 1)',
+            'rgba(16, 185, 129, 1)',
+            'rgba(245, 158, 11, 1)',
+            'rgba(239, 68, 68, 1)',
+            'rgba(168, 85, 247, 1)',
+            'rgba(251, 191, 36, 1)',
+            'rgba(34, 197, 94, 1)'
+          ],
+          borderWidth: 3, // Thicker border for bar graph
+          borderRadius: 8,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
 
+    // Small Pie Chart
+    const smallCtx = document.getElementById('smallChart').getContext('2d');
+    new Chart(smallCtx, {
+      type: 'pie',
+      data: {
+        labels: ['Direct', 'Referral', 'Social Media', 'Email'],
+        datasets: [{
+          label: 'Traffic Sources',
+          data: [300, 50, 100, 40],
+          backgroundColor: [
+            'rgba(59, 130, 246, 0.7)',
+            'rgba(34, 197, 94, 0.7)',
+            'rgba(234, 179, 8, 0.7)',
+            'rgba(239, 68, 68, 0.7)'
+          ],
+          borderColor: [
+            'rgba(255,255,255,1)',
+            'rgba(255,255,255,1)',
+            'rgba(255,255,255,1)',
+            'rgba(255,255,255,1)'
+          ],
+          borderWidth: 6, // Thicker white border for pie chart
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: '#374151',
+              font: {
+                size: 14,
+                weight: 'bold'
+              }
+            }
+          }
+        }
+      }
+    });
+  </script>
 </body>
 </html>
