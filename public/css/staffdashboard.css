@@ -23,7 +23,90 @@
             color: var(--text-dark);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+         .profile-dropdown {
+            position: relative;
+            z-index: 5000; /* Higher than any card or sidebar */
+        }
+
+        .profile-dropdown .dropdown-toggle {
+            border: 2px solid var(--accent-color);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            background: rgba(251, 191, 36, 0.1);
+            transition: all 0.3s ease;
+        }
         
+        .profile-dropdown .dropdown-toggle:hover {
+            background: var(--accent-color);
+            color: var(--text-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(251, 191, 36, 0.3);
+        }
+        
+        .profile-dropdown .dropdown-menu {
+            z-index: 5001 !important;
+            position: absolute;
+            right: 0;
+            left: auto;
+            top: 100%;
+            min-width: 240px;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(60, 72, 88, 0.18);
+            border: none;
+            padding: 0.75rem 0;
+            animation: fadeInDropdown 0.25s ease;
+            background: #fff;
+            margin-top: 0.5rem;
+        }
+        
+        .profile-dropdown .dropdown-menu .dropdown-item {
+            padding: 0.85rem 1.5rem;
+            font-size: 1.05rem;
+            color: #222;
+            border-radius: 10px;
+            transition: background 0.18s, color 0.18s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .profile-dropdown .dropdown-menu .dropdown-item i {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+        
+        .profile-dropdown .dropdown-menu .dropdown-item:hover {
+            background: #f8fafc;
+            color: #1e40af;
+        }
+        
+        .profile-dropdown .dropdown-divider {
+            margin: 0.5rem 0;
+            border-top: 1px solid #f1f1f1;
+        }
+        
+        .profile-dropdown .dropdown-header {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #888;
+            padding: 0.5rem 1.5rem 0.25rem 1.5rem;
+            letter-spacing: 0.5px;
+        }
+        
+        @keyframes fadeInDropdown {
+            from { opacity: 0; transform: translateY(-10px);}
+            to   { opacity: 1; transform: translateY(0);}
+        }
+        
+        /* Profile avatar in navbar */
+        .profile-dropdown .dropdown-toggle img {
+            border: 2px solid #f5f6fa;
+            box-shadow: 0 2px 8px rgba(60, 72, 88, 0.08);
+            transition: box-shadow 0.2s;
+        }
+        .profile-dropdown .dropdown-toggle:hover img {
+            box-shadow: 0 4px 16px rgba(60, 72, 88, 0.16);
+        }
         .sidebar {
             min-width: 260px;
             max-width: 260px;
@@ -31,8 +114,8 @@
             color: #fff;
             min-height: 100vh;
             box-shadow: 4px 0 15px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 1060; /* Ensure sidebar is above main content */
+            position: relative; /* Ensure stacking context for dropdown */
+            z-index: 1060;      /* Already present, keep this */
             overflow-y: auto;
         }
         
@@ -98,7 +181,7 @@
         }
         
         .sidebar .dropdown-menu {
-            z-index: 1100 !important; /* Higher than stat-card (10) and Bootstrap modals */
+            z-index: 3000 !important;
             position: absolute !important;
             background: rgba(30, 43, 111, 0.95);
             border: none;
@@ -142,83 +225,28 @@
             font-size: 1.5rem;
         }
         
-        .profile-dropdown .dropdown-toggle {
-            border: 2px solid var(--accent-color);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            background: rgba(251, 191, 36, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .profile-dropdown .dropdown-toggle:hover {
-            background: var(--accent-color);
-            color: var(--text-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(251, 191, 36, 0.3);
-        }
-        
-        .profile-dropdown .dropdown-menu {
-            z-index: 2000 !important;
-            min-width: 220px;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(60, 72, 88, 0.18);
-            border: none;
-            padding: 0.5rem 0;
-            animation: fadeInDropdown 0.25s ease;
-            background: #fff;
-        }
-        
-        .profile-dropdown .dropdown-menu .dropdown-item {
-            padding: 0.75rem 1.25rem;
-            font-size: 1rem;
-            color: #333;
-            border-radius: 8px;
-            transition: background 0.15s;
-        }
-        
-        .profile-dropdown .dropdown-menu .dropdown-item:hover {
-            background: #f5f6fa;
-            color: #007bff;
-        }
-        
-        .profile-dropdown .dropdown-divider {
-            margin: 0.25rem 0;
-        }
-        
-        @keyframes fadeInDropdown {
-            from { opacity: 0; transform: translateY(-10px);}
-            to   { opacity: 1; transform: translateY(0);}
-        }
-        
-        /* Profile avatar in navbar */
-        .profile-dropdown .dropdown-toggle img {
-            border: 2px solid #f5f6fa;
-            box-shadow: 0 2px 8px rgba(60, 72, 88, 0.08);
-            transition: box-shadow 0.2s;
-        }
-        .profile-dropdown .dropdown-toggle:hover img {
-            box-shadow: 0 4px 16px rgba(60, 72, 88, 0.16);
-        }
+       
         
         .stats-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
+            /* overflow: visible;  Remove any overflow here */
         }
         
         .stat-card {
             background: #fff;
             border-radius: 20px;
-            overflow: hidden;
+            /* overflow: hidden;   Remove this line */
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
             transition: all 0.3s ease;
             height: 100%;
-            position: relative;
+          
             padding: 2rem 1.5rem 1.5rem 1.5rem;
             border: none;
             text-align: center;
-            z-index: 10; /* Lower z-index for stat-card */
+      
         }
         
         .stat-card::before {
