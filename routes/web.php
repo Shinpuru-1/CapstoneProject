@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\StaffDashboardController;
 use App\Http\Controllers\CustomerDashboardController;
+use App\Http\Controllers\StaffInventory\StaffInventoryController;
 
 Route::get('/', function () {
     return view('landingpage');
@@ -31,7 +32,7 @@ Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name
     // Staff routes
     Route::middleware(['auth'])->group(function () {
         Route::get('/staff/dashboard', [StaffDashboardController::class, 'staffDashboard'])->name('staff.dashboard');
-        Route::get('/staff/inventory', [App\Http\Controllers\InventoryController::class, 'index'])->name('staff.inventory');
+        Route::get('/staff/inventory', [StaffInventoryController::class, 'index'])->name('staff.inventory');
     });
 
     // Customer routes
