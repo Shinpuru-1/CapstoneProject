@@ -153,6 +153,101 @@
                             </div>
                         </div>
                     </header>
+                    
+                    <!-- Inventory Section -->
+                    <div class="card shadow-sm">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="fas fa-boxes me-2"></i>Inventory Management</h5>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                                <i class="fas fa-plus me-2"></i>Add Product
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <!-- Add this search section -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                        <input type="text" class="form-control" id="searchProduct" placeholder="Search products...">
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            Filter By
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#" data-filter="all">All Products</a></li>
+                                            <li><a class="dropdown-item" href="#" data-filter="raw_materials">Raw Materials</a></li>
+                                            <li><a class="dropdown-item" href="#" data-filter="finished_products">Finished Products</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="#" data-filter="in_stock">In Stock</a></li>
+                                            <li><a class="dropdown-item" href="#" data-filter="low_stock">Low Stock</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Product Name</th>
+                                            <th>Category</th>
+                                            <th>Stock</th>
+                                            <th>Price</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($products as $product)
+                                            <tr>
+                                                <td>{{ $product->id }}</td>
+                                                <td>{{ $product->name }}</td>
+                                                <td>{{ $product->category }}</td>
+                                                <td>{{ $product->stock }}</td>
+                                                <td>₱{{ number_format($product->price, 2) }}</td>
+                                                <td>
+                                                    @if($product->stock > 10)
+                                                        <span class="badge bg-success">In Stock</span>
+                                                    @elseif($product->stock > 0)
+                                                        <span class="badge bg-warning">Low Stock</span>
+                                                    @else
+                                                        <span class="badge bg-danger">Out of Stock</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info me-1" title="View" 
+                                                            data-bs-toggle="modal" data-bs-target="#viewProductModal{{ $product->id }}">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-warning me-1" title="Edit"
+                                                            data-bs-toggle="modal" data-bs-target="#editProductModal{{ $product->id }}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <form action="{{ route('staff.product.destroy', $product->id) }}" method="POST" 
+                                                          class="d-inline-block" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center">No products found</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+
+                                @if($products->hasPages())
+                                    <div class="d-flex justify-content-end mt-3">
+                                        {{ $products->links() }}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -231,6 +326,52 @@
         </div>
     </div>
 
+    <!-- Add Product Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">
+                        <i class="fas fa-plus me-2"></i>Add New Product
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('staff.product.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="productName" class="form-label">Product Name</label>
+                            <input type="text" class="form-control" id="productName" name="productName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-select" id="category" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="raw_materials">Raw Materials</option>
+                                <option value="finished_products">Finished Products</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="stock" class="form-label">Initial Stock</label>
+                            <input type="number" class="form-control" id="stock" name="stock" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₱</span>
+                                <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap JS (required for dropdowns and modals) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -257,6 +398,56 @@
         // Hide sidebar on resize if desktop
         window.addEventListener('resize', () => {
             if(window.innerWidth >= 992) hideSidebar();
+        });
+    </script>
+    <script>
+        // Product search functionality
+        document.getElementById('searchProduct').addEventListener('keyup', function() {
+            let searchText = this.value.toLowerCase();
+            let tableRows = document.querySelectorAll('table tbody tr');
+            
+            tableRows.forEach(row => {
+                let productName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                let category = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                
+                if(productName.includes(searchText) || category.includes(searchText)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Filter functionality
+        document.querySelectorAll('[data-filter]').forEach(filter => {
+            filter.addEventListener('click', function(e) {
+                e.preventDefault();
+                let filterValue = this.dataset.filter;
+                let tableRows = document.querySelectorAll('table tbody tr');
+                
+                tableRows.forEach(row => {
+                    let category = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                    let stock = parseInt(row.querySelector('td:nth-child(4)').textContent);
+                    
+                    switch(filterValue) {
+                        case 'all':
+                            row.style.display = '';
+                            break;
+                        case 'raw_materials':
+                            row.style.display = category.includes('raw materials') ? '' : 'none';
+                            break;
+                        case 'finished_products':
+                            row.style.display = category.includes('finished products') ? '' : 'none';
+                            break;
+                        case 'in_stock':
+                            row.style.display = stock > 0 ? '' : 'none';
+                            break;
+                        case 'low_stock':
+                            row.style.display = stock <= 10 ? '' : 'none';
+                            break;
+                    }
+                });
+            });
         });
     </script>
 </body>

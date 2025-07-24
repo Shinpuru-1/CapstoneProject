@@ -47,7 +47,11 @@ Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name
     // Staff routes
     Route::middleware(['auth'])->group(function () {
         Route::get('/staff/dashboard', [StaffDashboardController::class, 'staffDashboard'])->name('staff.dashboard');
+    });
+    Route::middleware(['auth'])->group(function () {
         Route::get('/staff/inventory', [StaffInventoryController::class, 'index'])->name('staff.inventory');
+        Route::post('/staff/product/store', [StaffInventoryController::class, 'store'])->name('staff.product.store');
+        Route::delete('/staff/product/{id}', [StaffInventoryController::class, 'destroy'])->name('staff.product.destroy');
     });
 
     // Customer routes
